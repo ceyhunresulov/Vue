@@ -1,17 +1,18 @@
 <template>
   <li>
     <span>{{ note.note }}</span>
-    <button @click="deleteItem">sil</button>
+    <button @click="deleteNote(note.id)">sil</button>
   </li>
 </template>
 
 <script>
 export default {
   props: ["note"],
-  methods: {
-    deleteItem() {
-      this.$emit("delete-item", this.note.id);
-    },
-  },
+  inject: ["deleteNote"],
+  // methods: {
+  //   deleteItem() {
+  //     this.$emit("delete-item", this.note.id);
+  //   },
+  // },
 };
 </script>

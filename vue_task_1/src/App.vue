@@ -2,7 +2,7 @@
   <div class="todo-box">
     <h3>to do app</h3>
     <hr />
-    <addSection @add-todo="addNewNote" />
+    <addSection />
     <todoList :dataList="todoList" @delete-note="deleteNote" />
     <resultBar :itemCount="todoList.length" />
   </div>
@@ -27,6 +27,13 @@ export default {
         { id: 4, note: "note#4" },
         { id: 5, note: "note#5" },
       ],
+    };
+  },
+  provide() {
+    return {
+      todoList: this.todoList,
+      addNewNote: this.addNewNote,
+      deleteNote: this.deleteNote,
     };
   },
   methods: {
