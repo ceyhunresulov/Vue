@@ -25,8 +25,13 @@ const store = createStore({
       },
     ],
   },
+  mutations: {
+    newUser(state, user) {
+      state.userList.push(user);
+    },
+  },
   getters: {
-    userList: "salam",
+    userList: (state) => state.userList,
   },
 });
 
