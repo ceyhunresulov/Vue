@@ -1,44 +1,42 @@
 <template>
-  <div class="login-box">
-    <h3>login</h3>
-    <form action="">
-      <input type="text" placeholder="user name" class="name" /><br />
-      <input type="text" placeholder="parol" class="parol" /><br />
-      <button type="submit" class="sign">sign</button>
-    </form>
+  <div class="login_register_container">
+    <h3 class="text-2xl text-center mb-3">Login</h3>
+    <input v-model="userData.userName" type="text" placeholder="Kullanıcı Adı" class="input mb-3" />
+    <input v-model="userData.password" type="password" placeholder="Şifre" class="input mb-3" />
+    <button @click="onSubmit" class="default-button">Giriş yap</button>
+    <span class="text-center mt-3 text-sm">
+      Üye değilim,
+      <router-link :to="{ name: 'register' }" href="#" class="text-red-900 hover:text-black">Üye olmak istiyorum!</router-link>
+    </span>
   </div>
 </template>
 
-<style>
-body {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.login-box {
-  margin: 0 auto;
-  width: 30%;
-  background-color: lightgray;
-}
-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-.sign {
-  width: 100%;
-  background-color: cadetblue;
-  color: white;
-  font-size: 20px;
-}
-h3 {
-  text-align: center;
-}
-.name,
-.parol {
-  width: 70%;
-  padding: 5px 10px;
-}
-</style>
+<script>
+import CryptoJS from "crypto-js";
+export default {
+  data() {
+    return {
+      userData: {
+        userName: null,
+        password: null,
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      const cryptoPassword = CryptoJS.HmacSHA1(this.userData.password, this.$store.getters._getKey).toString();
+      this.$appAxios
+        .get(`/users?username=${this.userData.userName}&password=${cryptoPassword}`)
+        .then((login_response) => {
+          console.log(login_response);
+          if (login_response?.data?.length > 0) {
+            this.$store.commit("stateUser", login_response.data[0]);
+          } else {
+            alert("bele istfadeci yoxdur!");
+          }
+        })
+        .catch((e) => console.log(e));
+    },
+  },
+};
+</script>

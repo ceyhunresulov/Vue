@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "fullName": "ceyhun resulov",
+      "userName": "ceka",
+      "password": "d7dd6d9e5148710d0c7e6a88c102f3c5df6c9b10",
+      "id": 1
+    },
+    {
+      "fullName": "ferhad",
+      "userName": "ferhad",
+      "password": "c05372dffb6e3c2f000b8eac224e4e40f2d49fb4",
+      "id": 2
+    }
+  ],
+  "bookmarks": [],
+  "categories": []
+}

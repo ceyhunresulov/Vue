@@ -1,45 +1,38 @@
 <template>
-  <div class="login-box">
-    <h3>Registr</h3>
-    <form action="">
-      <input type="text" placeholder="fullname" class="name" /><br />
-      <input type="text" placeholder="user name" class="parol" /><br />
-      <input type="text" placeholder="parol" class="parol" /><br />
-      <button type="submit" class="sign">Registr</button>
-    </form>
+  <div class="login_register_container">
+    <h3 class="text-2xl text-center mb-3">Register</h3>
+    <input v-model="userData.fullName" type="text" placeholder="Tam Ad" class="input mb-3" />
+    <input v-model="userData.userName" type="text" placeholder="Kullanıcı Adı" class="input mb-3" />
+    <input v-model="userData.password" type="password" placeholder="Şifre" class="input mb-3" />
+    <button class="default-button" @click="onSave">Kayıt ol</button>
+    <span class="text-center mt-3 text-sm">
+      Zaten Üyeyim,
+      <router-link :to="{ name: 'Login' }" href="#" class="text-red-900 hover:text-black">Giriş yap!</router-link>
+    </span>
   </div>
 </template>
 
-<style>
-body {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.login-box {
-  margin: 0 auto;
-  width: 30%;
-  background-color: lightgray;
-}
-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-.sign {
-  width: 100%;
-  background-color: cadetblue;
-  color: white;
-  font-size: 20px;
-}
-h3 {
-  text-align: center;
-}
-.name,
-.parol {
-  width: 70%;
-  padding: 5px 10px;
-}
-</style>
+<script>
+import CryptoJS from "crypto-js";
+export default {
+  data() {
+    return {
+      userData: {
+        fullName: null,
+        userName: null,
+        password: null,
+      },
+    };
+  },
+  methods: {
+    onSave() {
+      const password = this.userData.password;
+      const cryptoPassword = CryptoJS.HmacSHA1(password, this.$store.getters._getKey).toString();
+      this.$appAxios.post("/users", { ...this.userData, password: cryptoPassword }).then((register_response) => {
+        console.log(register_response);
+      });
+      this.$router.push({ name: "Home" });
+    },
+  },
+};
+</script>
