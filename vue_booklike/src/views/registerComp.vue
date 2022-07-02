@@ -31,7 +31,7 @@ export default {
       this.$appAxios.post("/users", { ...this.userData, password: cryptoPassword }).then((register_response) => {
         console.log(register_response);
       });
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "Login" });
     },
   },
 };

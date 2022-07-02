@@ -26,16 +26,17 @@ export default {
     onSubmit() {
       const cryptoPassword = CryptoJS.HmacSHA1(this.userData.password, this.$store.getters._getKey).toString();
       this.$appAxios
-        .get(`/users?username=${this.userData.userName}&password=${cryptoPassword}`)
+        .get(`/users?userName=${this.userData.userName}&password=${cryptoPassword}`)
         .then((login_response) => {
           console.log(login_response);
           if (login_response?.data?.length > 0) {
-            this.$store.commit("stateUser", login_response.data[0]);
+            this.$store.commit("stateUser", login_response?.data[0]);
           } else {
             alert("bele istfadeci yoxdur!");
           }
         })
         .catch((e) => console.log(e));
+      this.$router.push({ name: "Home" });
     },
   },
 };

@@ -11,7 +11,7 @@
     </select>
     <textarea placeholder="Açıklama" class="input mb-3" cols="30" rows="10"></textarea>
     <div class="flex items-center justify-end gap-x-1">
-      <button class="secondary-button">İptal</button>
+      <router-link class="secondary-button" :to="{ name: 'Home' }">İptal</router-link>
       <button class="default-button">Kaydet</button>
     </div>
   </div>
