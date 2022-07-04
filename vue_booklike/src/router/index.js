@@ -22,6 +22,21 @@ const routes = [
     path: "/new",
     component: () => import("@/views/newBookmark"),
   },
+  {
+    name: "Favorites",
+    path: "/favorites",
+    component: () => import("@/views/userAccount"),
+  },
+  {
+    name: "Likes",
+    path: "/likes",
+    component: () => import("@/views/userAccount"),
+  },
+  {
+    name: "Settings",
+    path: "/settings",
+    component: () => import("@/views/userAccount"),
+  },
 ];
 
 const router = createRouter({

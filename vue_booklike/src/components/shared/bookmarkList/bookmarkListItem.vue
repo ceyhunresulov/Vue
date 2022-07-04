@@ -4,7 +4,7 @@
       <div class="p-3">
         <a :href="item.url" target="_blank" class="hover:text-black font-bold text-l mb-1 text-gray-600 text-center">{{ item.title }}</a>
         <div class="flex items-center justify-center mt-2 gap-x-1">
-          <button class="like-btn group">
+          <button class="like-btn group" @click="bookmarkLike" :class="{ 'bookmark-item-active': checkLike }">
             <svg xmlns="http://www.w3.org/2000/svg" class="fill-current group-hover:text-white" height="24" viewBox="0 0 24 24" width="24">
               <path d="M0 0h24v24H0V0zm0 0h24v24H0V0z" fill="none" />
               <path
@@ -12,7 +12,7 @@
               />
             </svg>
           </button>
-          <button class="bookmark-btn group bookmark-item-active">
+          <button class="bookmark-btn group" :class="{ 'bookmark-item-active': checkSave }" @click="bookmarkSave">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="fill-current group-hover:text-white"
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     item: {
@@ -59,11 +61,46 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      getCurrentUser: "_getCurrentUser",
+      userLikes: "_userLikes",
+      getBookmarkSave: "_bookmarkSave",
+    }),
     categoryName() {
       return this.item?.category?.category || "_";
     },
     userName() {
       return this.item?.user?.fullName || "_";
+    },
+    checkLike() {
+      return this.userLikes?.indexOf(this.item.id) > -1;
+    },
+    checkSave() {
+      return this.getBookmarkSave?.indexOf(this.item.id) > -1;
+    },
+  },
+  methods: {
+    bookmarkLike() {
+      let likes = [...this.userLikes];
+      if (!this.checkLike) {
+        likes = [...likes, this.item.id];
+      } else {
+        likes = likes.filter((l) => l != this.item.id);
+      }
+      this.$appAxios.patch(`users/${this.getCurrentUser.id}`, { likes: likes }).then(() => {
+        this.$store.commit("setLike", likes);
+      });
+    },
+    bookmarkSave() {
+      let saves = [...this.getBookmarkSave];
+      if (!this.checkSave) {
+        saves = [...saves, this.item.id];
+      } else {
+        saves = saves.filter((l) => l != this.item.id);
+      }
+      this.$appAxios.patch(`users/${this.getCurrentUser.id}`, { bookmarkSave: saves }).then(() => {
+        this.$store.commit("setBookmarkSave", saves);
+      });
     },
   },
 };
